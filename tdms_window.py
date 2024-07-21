@@ -15,9 +15,10 @@ class TDMSTypeWindow(QMainWindow):
         super().__init__()
         self.previous_window = previous_window
         self.setWindowTitle("Choose TDMS Type")
-        self.setGeometry(100, 100, 400, 200)
+        self.setGeometry(100, 100, 1050, 750)
+        self.tdms_file_count = 0
         logger.info("TDMS Type selection window opened")
-        
+        self.showMaximized()
         self.set_background_image(r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\Danfoss_BG.png")
 
 
@@ -48,10 +49,13 @@ class TDMSTypeWindow(QMainWindow):
         self.close()
         self.coupled_upload_window = CoupledUploadWindow(previous_window=self)
         self.coupled_upload_window.show()
+        
+    def update_tdms_file_count(self, folder_path):
+        self.tdms_file_count = sum(1 for file in os.listdir(folder_path) if file.endswith('.tdms'))
 
     def set_background_image(self, image_path):
         oImage = QImage(image_path)
-        sImage = oImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+        sImage = oImage.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
@@ -72,9 +76,9 @@ class UploadWindow(QMainWindow):
         super().__init__()
         self.previous_window = previous_window
         self.setWindowTitle("Upload Folder")
-        self.setGeometry(100, 100, 600, 250)
+        self.setGeometry(100, 100, 1050, 750)
         logger.info("Upload window opened")
-        
+        self.showMaximized()
         # Set background image
         self.set_background_image(r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\Danfoss_BG.png")
 
@@ -92,7 +96,7 @@ class UploadWindow(QMainWindow):
         
     def set_background_image(self, image_path):
         oImage = QImage(image_path)
-        sImage = oImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+        sImage = oImage.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
@@ -126,9 +130,13 @@ class UploadWindow(QMainWindow):
                                         data[group.name] = pd.concat([data[group.name], df]).drop_duplicates().reset_index(drop=True)
                                     except Exception as e:
                                         logger.error(f"Error concatenating data for file {file_name}: {e}")
+            self.previous_window.update_tdms_file_count(folder_path)
             self.close()
-            self.script_upload_window = ScriptUploadWindow(folder_path, previous_window=self)
+            script_path = r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\piston_group.py"  # Replace with  script path
+            self.script_upload_window = ScriptUploadWindow(folder_path, script_path, previous_window=self)
             self.script_upload_window.show()
+            #self.script_upload_window = ScriptUploadWindow(folder_path, previous_window=self)
+            #self.script_upload_window.show()
 
     def go_to_previous_window(self):
         self.close()
@@ -140,8 +148,10 @@ class CoupledUploadWindow(QMainWindow):
         super().__init__()
         self.previous_window = previous_window
         self.setWindowTitle("Upload Coupled TDMS Folder")
-        self.setGeometry(100, 100, 600, 250)
+        self.setGeometry(100, 100, 1050, 750)
         logger.info("Coupled Upload window opened")
+        self.showMaximized()
+        self.set_background_image(r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\Danfoss_BG.png")
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -160,9 +170,14 @@ class CoupledUploadWindow(QMainWindow):
         if folder_path:
             logger.info(f"Coupled folder uploaded: {folder_path}")
             self.combine_tdms_files(folder_path)
+            self.previous_window.update_tdms_file_count(folder_path)
+
             self.close()
-            self.script_upload_window = ScriptUploadWindow(folder_path, previous_window=self)
+            script_path = r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\piston_group.py"  # Replace with  script path
+            self.script_upload_window = ScriptUploadWindow(folder_path, script_path, previous_window=self)
             self.script_upload_window.show()
+            #self.script_upload_window = ScriptUploadWindow(folder_path, previous_window=self)
+            #self.script_upload_window.show()
 
     def combine_tdms_files(self, folder_path):
         logger.info(f"Combining TDMS files in {folder_path}")
@@ -178,6 +193,17 @@ class CoupledUploadWindow(QMainWindow):
                     tdms_files.append(dest_path)
         logger.info(f"Combined {len(tdms_files)} TDMS files in {folder_path}")
 
+    def set_background_image(self, image_path):
+        oImage = QImage(image_path)
+        sImage = oImage.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+        palette = QPalette()
+        palette.setBrush(QPalette.Window, QBrush(sImage))
+        self.setPalette(palette)
+
+    def resizeEvent(self, event):
+        self.set_background_image(r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\Danfoss_BG.png")
+        super().resizeEvent(event)
+    
     def go_to_previous_window(self):
         self.close()
         if self.previous_window:

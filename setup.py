@@ -24,19 +24,26 @@ from cx_Freeze import setup, Executable
 sys.setrecursionlimit(5000)
 
 setup(
-    name="GUIapp",
+    name="GUI_Piston_app",
     version="1.0",
     description="Python GUI Based APP for Data Visualization and Data Analysis",
-    executables=[Executable("gui_pyqt.py")],
+    executables=[Executable("main.py")],
     options={
         "build_exe": {
             "include_files": [
-                "gui_pyqt.py",
+                "gui_pyqt2.py",
                 "insert_user.py", 
                 "logger.py", 
-                "preprocess_script.py", 
                 "setup_db.py", 
                 "tdmsreader.py",
+                "main.py",
+                "display_window.py",
+                "efficiency_window.py",
+                "guipdf.py",
+                "login_window.py",
+                "piston_group.py",
+                "script_window.py",
+                "tdms_window.py",
                 "users.db"  # Ensure users.db is included
             ],
             "excludes": ["tkinter"],  # Exclude unnecessary modules

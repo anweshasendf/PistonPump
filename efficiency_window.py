@@ -10,8 +10,9 @@ class EfficiencyWindow(QMainWindow):
         super().__init__()
         self.previous_window = previous_window
         self.setWindowTitle("Efficiency Options")
-        self.setGeometry(100, 100, 600, 300)
+        self.setGeometry(100, 100, 1050, 750)
         logger.info("Efficiency options window opened")
+        self.showMaximized()
         
         self.set_background_image(r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\Danfoss_BG.png")
 
@@ -31,7 +32,7 @@ class EfficiencyWindow(QMainWindow):
             
     def set_background_image(self, image_path):
         oImage = QImage(image_path)
-        sImage = oImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+        sImage = oImage.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
@@ -56,8 +57,9 @@ class HydrostaticWindow(QMainWindow):
         super().__init__()
         self.previous_window = previous_window
         self.setWindowTitle("Hydrostatic Options")
-        self.setGeometry(100, 100, 600, 250)
+        self.setGeometry(100, 100, 1050, 750)
         logger.info("Hydrostatic options window opened")
+        self.showMaximized()
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -75,7 +77,7 @@ class HydrostaticWindow(QMainWindow):
             
     def set_background_image(self, image_path):
         oImage = QImage(image_path)
-        sImage = oImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+        sImage = oImage.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)

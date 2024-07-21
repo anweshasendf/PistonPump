@@ -16,3 +16,5 @@ for group_name, df in data.items():
     print(f"Group: {group_name}")
     print(df.columns)
     print(df)
+    
+#/'Data'/'Time'	/'Data'/'Inlet_temp'

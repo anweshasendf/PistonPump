@@ -22,9 +22,10 @@ class LoginWindow(QMainWindow):
         super().__init__()
         logger.info("App launched")
         self.setWindowTitle("Login")
-        self.setGeometry(100, 100, 600, 300)
-        
+        self.setGeometry(100, 100, 1050, 750)
+        #self.setFixedSize(950, 650)
         self.set_background_image(r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\Danfoss_BG.png")
+        self.showMaximized()
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -47,7 +48,7 @@ class LoginWindow(QMainWindow):
 
     def set_background_image(self, image_path):
         oImage = QImage(image_path)
-        sImage = oImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+        sImage = oImage.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
@@ -74,8 +75,9 @@ class OptionWindow(QMainWindow):
         super().__init__()
         self.previous_window = previous_window
         self.setWindowTitle("Select Option")
-        self.setGeometry(100, 100, 600, 250)
+        self.setGeometry(100, 100, 1050, 750)
         logger.info("Option window opened")
+        self.showMaximized()
         
         self.set_background_image(r"C:\Users\U436445\OneDrive - Danfoss\Documents\GitHub\GUI\Danfoss_BG.png")
 
@@ -97,7 +99,7 @@ class OptionWindow(QMainWindow):
 
     def set_background_image(self, image_path):
         oImage = QImage(image_path)
-        sImage = oImage.scaled(self.size(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+        sImage = oImage.scaled(self.size(), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(sImage))
         self.setPalette(palette)
